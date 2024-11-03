@@ -1,16 +1,45 @@
-# Prerequisites
-*.d
+
+## do not want to track any makefiles on remote. 
+**/*.tst
+**/make*
+**/*.s*
+**/*.d*
+**/*.deps
+**/*.tags*
+
+
+
+# basililsk specific files
+**/*.DS_Store
+**/*.html
+**/intermediate*
+**/log*.dat
+**/restart*
+**/*.tags*
+**/*.deps
+**/*.tests
+**/*.s*
+**/Video
+**/*.mp4
+**/*.json
+**/*.bv
+**/*.png
+
+# Custom executables (add your specific executable names here)
+getFacet
+getData-elastic-scalar
+pizza
+
+# never exclude these files
+!*.c
+!*.h
+!*.sbatch
 
 # Object files
 *.o
 *.ko
 *.obj
 *.elf
-
-# Linker output
-*.ilk
-*.map
-*.exp
 
 # Precompiled Headers
 *.gch
@@ -50,3 +79,26 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# IDE/Editor folders
+.vscode/
+.idea/
+*.swp
+*~
+
+# Build directories
+build/
+bin/
+obj/
+
+# Dependency directories
+deps/
+
+# OS generated files
+**/*.DS_Store
+**/.DS_Store?
+**/._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

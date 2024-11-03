@@ -1,8 +1,13 @@
-/** Title: log-conform-elastic_v5.h
+/** Title: log-conform-elastic_v9.h
 # Author: Vatsal Sanjay & Ayush Dixit
 # vatsalsanjay@gmail.com
 # Physics of Fluids
-# Updated: Aug 18, 2023
+# Updated: Nov 03, 2024
+
+# Changelog Nov 03, 2024: 
+- This is a legacy version and no longer in use.
+- The current version is [log-conform-viscoelastic-scalar-2D](log-conform-viscoelastic-scalar-2D). Please use that instead.
+- For details, see: [https://github.com/comphy-lab/Viscoelastic3D](https://github.com/comphy-lab/Viscoelastic3D)
 */
 
 // The code is same as http://basilisk.fr/src/log-conform.h but written for purely elastic limit (lambda \to \infty)

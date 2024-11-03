@@ -23,7 +23,7 @@
 **/*.mp4
 **/*.json
 **/*.bv
-**/*.png
+*/*.png
 
 # Custom executables (add your specific executable names here)
 getFacet

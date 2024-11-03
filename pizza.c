@@ -40,22 +40,33 @@ u.n[right] = neumann(0.);
 p[right] = dirichlet(0.);
 
 /*
-The charateristic scales: R_0, G, \rho: initial radius of the blob, elastic (pizza) modulus, and (pizza) density.
-The characteristic frequency is \Omega_c = sqrt{G/(\rho R_0^2)}: frequency required to significantly stretch the blob.
+The charateristic scales: $R_0$, $G$, $\rho$: initial radius of the blob, elastic (pizza) modulus, and (pizza) density.
+
+The characteristic frequency is $\Omega_c = \sqrt{G/(\rho R_0^2)}$: frequency required to significantly stretch the blob.
 
 For Oldroyd-B, the parameters are: 
-- Dimensionless retardation time: tEtas = (\eta_s/G)*\Omega_c = \eta_s/sqrt{\rho G R_0^2}. For a purely elastic solid, tR is 0 and tR \to \infty is liquid (tR is the time it takes to show an elastic response). 
-- Dimensionless relaxation time: tLam = \lambda * \Omega_c = \lambda * sqrt{G/(\rho R_0^2)}. For a purely viscous liquid, tLam is 0 and tLam \to \infty is solid (tLam is the time it takes to show a viscous response).
-* A purely elastic solid has tEtas = 0 and tLam = \infty.
+- Dimensionless retardation time: $t_{\eta s} = (\eta_s/G)*\Omega_c = \eta_s/\sqrt{\rho G R_0^2}$. $t_{\eta s}$ is the time it takes to show an elastic response
+  - For a purely elastic solid, $t_{\eta s}$ is 0
+  - $t_{\eta s} \to \infty$ is liquid. 
 
-Additionally, there are two other dimensionless numbers:
+- Dimensionless relaxation time: $t_\lambda = \lambda * \Omega_c = \lambda * \sqrt{G/(\rho R_0^2)}$. $t_\lambda$ is the time it takes to show a viscous response
+  - For a viscous liquid, $t_\lambda$ is 0 and for solids, $t_\lambda \to \infty$.
+  - A purely elastic solid has $t_{\eta s} = 0$ and $t_\lambda \to \infty$.
 
-# Pizza number: \Pi = \rho\Omega^2R_0^2/G.
-This is the ratio of inertial to elastic forces. This is the square of the ratio of two characteristic frequencies: (\Omega/\Omega_c)^2. \Pi \gg 1 is needed to show significant deformation of the blob. This is similar to the Bond number.
+### Additionally, there are two other dimensionless numbers:
 
-# Elasto-capillary number: Ec = \gamma/(G R_0).
-This compares the elastic to capillary forces. To start with, we can assume G \gg \gamma/R.
-- Another way to think about it is that Ec = \Omega_\gamma^2/(\Omega_c^2) = \frac{\gamma/(\rho R_0^3)}{G/(\rho R_0^2)} = \gamma/(G R_0).
+#### Pizza number: $\Pi = \rho\Omega^2R_0^2/G$.
+
+This is the ratio of inertial to elastic forces. This is the square of the ratio of two characteristic frequencies: $(\Omega/\Omega_c)^2$.<br>
+$\Pi \gg 1$ is needed to show significant deformation of the blob. This is similar to the Bond number.
+
+#### Elasto-capillary number: $Ec = \gamma/(G R_0)$.
+
+This compares the elastic to capillary forces. To start with, we can assume $G \gg \gamma/R$.
+- Another way to think about it is that $Ec = \Omega_\gamma^2/\Omega_c^2 = \frac{\gamma/(\rho R_0^3)}{G/(\rho R_0^2)} = \gamma/(G R_0)$.
+
+## Oldroyd-B model implementation
+For details of the constitutive model [Oldroyd-B model](https://en.wikipedia.org/wiki/Oldroyd-B_model), see: [https://github.com/comphy-lab/Viscoelastic3D](https://github.com/comphy-lab/Viscoelastic3D).
 */
 
 char comm[80], restartFile[80], logFile[80];

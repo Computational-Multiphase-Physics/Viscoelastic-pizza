@@ -6,8 +6,8 @@
 **/*.d*
 **/*.deps
 **/*.tags*
-
-
+**/*dump*
+**/*Dump*
 
 # basililsk specific files
 **/*.DS_Store
@@ -23,12 +23,14 @@
 **/*.mp4
 **/*.json
 **/*.bv
-*/*.png
+**/*.png
 
 # Custom executables (add your specific executable names here)
-getFacet
+getFacet2D
 getData-elastic-scalar
 pizza
+getData-elastic-scalar2D
+getX_Vjet
 
 # never exclude these files
 !*.c

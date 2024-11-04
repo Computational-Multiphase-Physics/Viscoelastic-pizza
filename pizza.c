@@ -20,7 +20,7 @@
 #include "log-conform-viscoelastic-scalar-2D.h"
 #include "tension.h" // uncomment to make Weber number finite
 
-#define tsnap (1e-1)
+#define tsnap (1e-2)
 #define tsnap2 (1e-4)
 
 // error tolerances
@@ -38,6 +38,12 @@ p[top] = dirichlet(0.);
 // right is outflow
 u.n[right] = neumann(0.);
 p[right] = dirichlet(0.);
+
+// bottom forcing axi!
+uf.n[bottom] = 0.;
+uf.t[bottom] = dirichlet(0); // since uf is multiplied by the metric which
+                             // is zero on the axis of symmetry
+p[top]    = neumann (neumann_pressure(ghost));
 
 /*
 The charateristic scales: $R_0$, $G$, $\rho$: initial radius of the blob, elastic (pizza) modulus, and (pizza) density.
@@ -72,9 +78,9 @@ For details of the constitutive model [Oldroyd-B model](https://en.wikipedia.org
 char comm[80], restartFile[80], logFile[80];
 int main(int argc, char const *argv[]) {
   
-  MAXlevel = 10;
-  tmax = 4e0; //atof(argv[3]);
-  Ldomain = 6.0; //atof(argv[4]);
+  MAXlevel = 9;
+  tmax = 1e1; //atof(argv[3]);
+  Ldomain = 4.0; //atof(argv[4]);
 
   /*
   Aspect ratio: H0/R. This is the initial height of the blob that will be stretched.
@@ -84,12 +90,12 @@ int main(int argc, char const *argv[]) {
   /*
   Pizza number: \rho\Omega^2R^2/G. 
   */
-  Pi = 1e-1; // atof(argv[6]); 
+  Pi = 4e0; // atof(argv[6]); 
 
   /* 
   Dimensionless retardation time: tEtas = (\eta_s/G)*\omega_c. For purely elastic solid, we need to keep tEas \to 0.  
   */
-  tEtas = 1e-2; // atof(argv[7]); 
+  tEtas = 5e-1; // atof(argv[7]); 
   /*
   Dimensionless relaxation time: tLam = \lambda * \omega_c. For purely elastic solid, we need to keep tLam \to \infty.
   */
@@ -97,10 +103,10 @@ int main(int argc, char const *argv[]) {
   /*
   Elasto-capillary number: \gamma/(G R_0). For now, this value is only a placeholder. We will assume G \gg \gamma/R.
   */
-  Ec = 1e-6; // atof(argv[9]); 
+  Ec = 1e-2; // atof(argv[9]); 
 
   MuAirPizza = 1e-2; // atof(argv[10]); // viscosity ratio \mu_{air}/\mu_{pizza dough}. This value needs to be close to 0. 
-  RhoR = 1e-2; // atof(argv[11]); // density ratio \rho_{air}/\rho_{pizza dough}. This value needs to be very close to 0.
+  RhoR = 1e-3; // atof(argv[11]); // density ratio \rho_{air}/\rho_{pizza dough}. This value needs to be very close to 0.
 
 
   L0=Ldomain;
@@ -147,8 +153,10 @@ int main(int argc, char const *argv[]) {
 event acceleration (i++) {
   face vector av = a;
   foreach_face(y){
-    double ff = (f[] + f[0,-1])/2.;
-    av.y[] += ff*fm.y[]*Pi;
+    if (y > 1e-20){
+      double ff = (f[] + f[0,-1])/2.;
+      av.y[] += ff*fm.y[]*Pi*(1.-RhoR)/rho(ff);
+    }
   }
 }
 
@@ -171,8 +179,10 @@ event adapt(i++) {
   We adapt the grid to resolve the interface and the flow. For infinite Weber number, these should be fine. 
   For finite Weber number, perhaps adaptation based on curvature is also needed. 
   */
-  adapt_wavelet ((scalar *){f, u.x, u.y, A11, A12, A22},
-    (double[]){fErr, VelErr, VelErr, AErr, AErr, AErr},
+ scalar KAPPA[];
+ curvature (f, KAPPA);
+  adapt_wavelet ((scalar *){f, u.x, u.y, A11, A12, A22, KAPPA},
+    (double[]){fErr, VelErr, VelErr, AErr, AErr, AErr, KErr},
     MAXlevel, 4);
 }
 
@@ -228,6 +238,14 @@ event logWriting (i++) {
       fprintf(ferr, "kinetic energy blew up! Stopping!\n");
       fp = fopen (logFile, "a");
       fprintf(fp, "kinetic energy too small now! Stopping!\n");
+      fclose(fp);
+      return 1;
+    }
+    if (rmax > 0.95*Ldomain){
+      dump(file="FailedDumpRmax");
+      fprintf(ferr, "Rtip has approached very close to the domain boundary! Stopping!\n");
+      fp = fopen (logFile, "a");
+      fprintf(fp, "Rtip has approached very close to the domain boundary! Stopping!\n");
       fclose(fp);
       return 1;
     }

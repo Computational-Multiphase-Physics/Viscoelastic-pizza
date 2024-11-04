@@ -17,7 +17,7 @@ matplotlib.rcParams['text.usetex'] = True
 # matplotlib.rcParams['text.latex.preamble'] = [r'\boldmath']
 
 def gettingFacets(filename):
-    exe = ["./getFacets", filename]
+    exe = ["./getFacet2D", filename]
     p = sp.Popen(exe, stdout=sp.PIPE, stderr=sp.PIPE)
     stdout, stderr = p.communicate()
     temp1 = stderr.decode("utf-8")

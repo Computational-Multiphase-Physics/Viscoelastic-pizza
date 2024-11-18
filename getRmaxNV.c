@@ -1,18 +1,17 @@
-/* Title: Calculating the velocity of jet tip
+/* Title: Calculating the velocity of the maximum radius of the pizza blob
 # Author: Vatsal Sanjay
 # vatsalsanjay@gmail.com
 # Physics of Fluids
 */
-#include "axi.h"
-#include "navier-stokes/centered.h"
-#include "vof.h"
-#include "tag.h"
-#include "heights.h"
-// #include "droplet_stat.h"
 
+#include "utils.h"
+#include "output.h"
+#include "fractions.h"
+#include "tag.h"
 
 char filename[80], nameTrack[80];
-scalar f[], * interfaces = {f};
+scalar f[];
+vector u;
 
 int main(int a, char const *arguments[])
 {
@@ -50,9 +49,9 @@ int main(int a, char const *arguments[])
 
   face vector s[];
   s.x.i = -1;
-  double yMin = HUGE;
+  double yMax = -HUGE;
   double vTip, xTP;
-  foreach(reduction(min:yMin)){
+  foreach(reduction(max:yMax)){
     if (f[] > 1e-6 && f[] < 1. - 1e-6 && d[] == MainPhase) {
       coord n1 = facet_normal (point, f, s);
       double alpha1 = plane_alpha (f[], n1);
@@ -60,8 +59,8 @@ int main(int a, char const *arguments[])
       if (facets (n1, alpha1, segment1) == 2){
         double x1 = x + (segment1[0].x+segment1[1].x)*Delta/2.;
         double y1 = y + (segment1[0].y+segment1[1].y)*Delta/2.;
-        if (y1 < yMin){
-          yMin = y1;
+        if (y1 > yMax){
+          yMax = y1;
           xTP = x1;
           vTip = u.y[];
         }
@@ -69,13 +68,13 @@ int main(int a, char const *arguments[])
     }
   }
   FILE * fp = ferr;
-  fprintf(ferr, "%f %7.6e %7.6e %7.6e\n", t, xTP, yMin, vTip);
+  fprintf(ferr, "%f %7.6e %7.6e %7.6e\n", t, xTP, yMax, vTip);
   fflush (fp);
   fclose (fp);
 
   FILE *fp2;
   fp2 = fopen (nameTrack, "a");
-  fprintf(fp2, "%f %7.6e %7.6e %7.6e\n", t, xTP, yMin, vTip);
+  fprintf(fp2, "%f %7.6e %7.6e %7.6e\n", t, xTP, yMax, vTip);
   fclose(fp2);
 
 }

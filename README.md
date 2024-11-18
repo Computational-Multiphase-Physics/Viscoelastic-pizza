@@ -60,3 +60,19 @@ Here, change 16 to the number of available cores.
 
 **Note:** In the [pizza.c](pizza.c) file, you can uncomment and edit ``argv" parts to pass parameters from terminal. 
 
+# Postprocess: 
+
+## Facets_Xjet.py
+- This is a python script to create interfacial facets in raster (png) format.
+- It takes the output from `./getFacet2D` and plots the facets using matplotlib.
+- It also calculates rMax and vMax using the output from `./getRmaxNV` and plots (rMax) as a blue marker.
+
+## VideoAxi.py
+- This is a python script to create a video from the facets data.
+- It takes the output from `./getFacet2D` and plots the facets in a video.
+- It also gets the velocity gradient tensor norm and the elastic energy (normalized by G) and plots using imshow in matplotlib.
+
+## gettingFacetsInPDF.ipynb
+- This is a notebook to create interfacial facets in vector format. 
+- It takes the output from `./getFacet2D` and plots the facets in a PDF.
+- It also calculates rMax and vMax using the output from `./getRmaxNV`. You can also look at the logFile.dat that is created while running the simulation to get rMax(t) which will have a much better time frequency as compared to the output from `./getRmaxNV` (which is restricted to number of snapshots we same instead of saving at every time step as in logFile.dat).

@@ -43,7 +43,7 @@ def gettingFacets(filename):
     return segs
 
 def gettingXjet(filename):
-    exe = ["./getX_Vjet", filename, name]
+    exe = ["./getRmaxNV", filename, name]
     p = sp.Popen(exe, stdout=sp.PIPE, stderr=sp.PIPE)
     stdout, stderr = p.communicate()
     temp1 = stderr.decode("utf-8")
@@ -54,24 +54,24 @@ def gettingXjet(filename):
 # ----------------------------------------------------------------------------------------------------------------------
 
 
-nGFS = 50001
-ci = 1000
-Ldomain = 8e0
-tsnap = 1e-3
+nGFS = 1000 # this is the number of snapshot files. Usually it is tmax / tsnap. So, if you run a simulation for 10 time units and take a snapshot every 0.01 time units, then nGFS = 10 / 0.01 = 1000
+ci = 1000 # change this to case number
+Ldomain = 4e0 # length of the domain in the R direction
+tsnap = 1e-2 # change this to time of snapshot time
 
-rminp, rmaxp, zminp, zmaxp = [-Ldomain, Ldomain, -1.5, 1.5]
+rminp, rmaxp, zminp, zmaxp = [-Ldomain, Ldomain, -1.5, 1.5] # domain limits
 
 name = "%4.4d_X_Vjet.dat" % ci
 
 if os.path.exists(name):
     print("File %s found! New data will be appended to the file" % name)
-folder = 'TrackingJet' # output folder
+folder = 'TrackingRmax' # output folder
 if not os.path.isdir(folder):
     os.makedirs(folder)
 
 for ti in range(nGFS):
     t = tsnap*ti
-    place = "pizza/intermediate/snapshot-%5.4f" % t
+    place = "intermediate/snapshot-%5.4f" % t
     ImageName = "%s/%9.9d.png" %(folder, int(1e3*t))
     if not os.path.exists(place):
         print("%s File not found!" % place)

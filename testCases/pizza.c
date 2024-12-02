@@ -15,9 +15,9 @@
 #include "axi.h"
 #include "navier-stokes/centered.h"
 #define FILTERED
-#include "two-phaseVE.h"
+#include "../src-local/two-phaseVE.h"
 #include "navier-stokes/conserving.h"
-#include "log-conform-viscoelastic-scalar-2D.h"
+#include "../src-local/log-conform-viscoelastic-scalar-2D.h"
 #include "tension.h" // uncomment to make Weber number finite
 
 #define tsnap (1e-2)

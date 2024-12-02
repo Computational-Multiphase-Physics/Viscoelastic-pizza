@@ -1,0 +1,3 @@
+ancestorEntries = ["log-conform-viscoelastic-scalar-2D.h"]
+ourEntries = ["log-conform-viscoelastic-scalar-2D.h"]
+theirEntries = ["src-local/log-conform-viscoelastic-scalar-2D.h"]

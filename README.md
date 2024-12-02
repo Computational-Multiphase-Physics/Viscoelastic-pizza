@@ -60,6 +60,26 @@ Here, change 16 to the number of available cores.
 
 **Note:** In the [pizza.c](pizza.c) file, you can uncomment and edit ``argv" parts to pass parameters from terminal. 
 
+## Practical Usage
+
+### Option 1: Use Repository As-Is
+Clone this repository and use it directly. This is the simplest approach as all paths and dependencies are already set up correctly.
+
+### Option 2: Copy Required Files
+You can also copy just the necessary files to your own project:
+
+1. From `testCases/`:
+   - Copy the `.c` files you need (e.g., `pizza.c`)
+
+2. From `src-local/`:
+   - Copy `log-conform-viscoelastic-scalar-2D.h`
+   - Copy `two-phaseVE.h`
+
+**Important Note**: When copying files, remember to:
+- Update the include paths in your `.c` files to match your project structure
+- Example: Change `#include "../src-local/two-phaseVE.h"` to match where you placed the header files
+- Ensure all dependencies (like Basilisk libraries) are properly set up in your environment
+
 # Postprocess: 
 
 ## Facets_Xjet.py

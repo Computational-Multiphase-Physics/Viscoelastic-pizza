@@ -2,7 +2,7 @@
 ## do not want to track any makefiles on remote. 
 **/*.tst
 **/make*
-**/*.s*
+**/*.s
 **/*.d*
 **/*.deps
 **/*.tags*

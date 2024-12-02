@@ -1,3 +1,6 @@
+testCases/src-local
+.project_config
+**/_darcs
 
 ## do not want to track any makefiles on remote. 
 **/*.tst
@@ -18,7 +21,6 @@
 **/*.tags*
 **/*.deps
 **/*.tests
-**/*.s*
 **/Video
 **/*.mp4
 **/*.json

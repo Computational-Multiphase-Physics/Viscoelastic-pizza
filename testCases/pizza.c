@@ -78,9 +78,9 @@ For details of the constitutive model [Oldroyd-B model](https://en.wikipedia.org
 char comm[80], restartFile[80], logFile[80];
 int main(int argc, char const *argv[]) {
   
-  MAXlevel = 9;
+  MAXlevel = 10;
   tmax = 2e1; //atof(argv[3]);
-  Ldomain = 4.0; //atof(argv[4]);
+  Ldomain = 12.0; //atof(argv[4]);
 
   /*
   Aspect ratio: H0/R. This is the initial height of the blob that will be stretched.
@@ -90,12 +90,12 @@ int main(int argc, char const *argv[]) {
   /*
   Pizza number: \rho\Omega^2R^2/G. 
   */
-  Pi = 4e0; // atof(argv[6]); 
+  Pi = 5.75; // atof(argv[6]); 
 
   /* 
   Dimensionless retardation time: tEtas = (\eta_s/G)*\omega_c. For purely elastic solid, we need to keep tEas \to 0.  
   */
-  tEtas = 5e-1; // atof(argv[7]); 
+  tEtas = 5e-2; // atof(argv[7]); 
   /*
   Dimensionless relaxation time: tLam = \lambda * \omega_c. For purely elastic solid, we need to keep tLam \to \infty.
   */

@@ -1,8 +1,12 @@
-
+testCases/src-local
+.project_config
+**/_darcs
+testCases/*.ipynb
+testCases/*.py
 ## do not want to track any makefiles on remote. 
 **/*.tst
 **/make*
-**/*.s*
+**/*.s
 **/*.d*
 **/*.deps
 **/*.tags*
@@ -18,7 +22,6 @@
 **/*.tags*
 **/*.deps
 **/*.tests
-**/*.s*
 **/Video
 **/*.mp4
 **/*.json

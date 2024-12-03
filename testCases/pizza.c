@@ -34,7 +34,7 @@ int MAXlevel;
 
 // top is outflow
 u.n[top] = neumann(0.);
-p[top] = dirichlet(0.);
+// p[top] = dirichlet(0.);
 // right is outflow
 u.n[right] = neumann(0.);
 p[right] = dirichlet(0.);
@@ -43,7 +43,7 @@ p[right] = dirichlet(0.);
 uf.n[bottom] = 0.;
 uf.t[bottom] = dirichlet(0); // since uf is multiplied by the metric which
                              // is zero on the axis of symmetry
-p[top]    = neumann (neumann_pressure(ghost));
+p[top]  = neumann (neumann_pressure(ghost));
 
 /*
 The charateristic scales: $R_0$, $G$, $\rho$: initial radius of the blob, elastic (pizza) modulus, and (pizza) density.
@@ -79,7 +79,7 @@ char comm[80], restartFile[80], logFile[80];
 int main(int argc, char const *argv[]) {
   
   MAXlevel = 9;
-  tmax = 1e1; //atof(argv[3]);
+  tmax = 2e1; //atof(argv[3]);
   Ldomain = 4.0; //atof(argv[4]);
 
   /*
@@ -153,10 +153,7 @@ int main(int argc, char const *argv[]) {
 event acceleration (i++) {
   face vector av = a;
   foreach_face(y){
-    if (y > 1e-20){
-      double ff = (f[] + f[0,-1])/2.;
-      av.y[] += ff*fm.y[]*Pi*(1.-RhoR)/rho(ff);
-    }
+    av.y[] += fm.y[]*Pi;
   }
 }
 
@@ -198,12 +195,13 @@ event logWriting (i++) {
 
   double ke = 0.;
   foreach (reduction(+:ke)){
-    ke += 0.5*(2*pi*y)*rho(f[])*(sq(u.y[])+sq(u.x[]))*sq(Delta);
+    ke += 0.5*(2*pi*y)*(f[])*(sq(u.y[])+sq(u.x[]))*sq(Delta);
   }
 
   scalar pos[];
   position (f, pos, {0,1,0});
   double rmax = statsf(pos).max;
+  double vAtRmax = interpolate(u.y, 0., rmax, linear=true);
 
   if (pid() == 0){
     static FILE * fp;
@@ -211,14 +209,14 @@ event logWriting (i++) {
       fprintf (ferr, "i dt t ke rmax\n");
       fp = fopen (logFile, "w");
       fprintf(fp, "Level %d tmax %g, Pi %g, tEtas %g, tLam %g, Ec %g\n", MAXlevel, tmax, Pi, tEtas, tLam, Ec);
-      fprintf (fp, "i dt t ke rmax\n");
+      fprintf (fp, "i dt t ke rmax vAtRmax\n");
     } else {
       fp = fopen (logFile, "a");
     }
 
-    fprintf (fp, "%d %g %g %g %g\n", i, dt, t, ke, rmax);
+    fprintf (fp, "%d %g %g %g %g %g\n", i, dt, t, ke, rmax, vAtRmax);
     fclose(fp);
-    fprintf (ferr, "%d %g %g %g %g\n", i, dt, t, ke, rmax);
+    fprintf (ferr, "%d %g %g %g %g %g\n", i, dt, t, ke, rmax, vAtRmax);
     
     if (ke < -1e-10){
       dump(file="FailedDumpKeNegative");

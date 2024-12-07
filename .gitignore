@@ -5,7 +5,6 @@ testCases/*.ipynb
 testCases/*.py
 ## do not want to track any makefiles on remote. 
 **/*.tst
-**/make*
 **/*.s
 **/*.d*
 **/*.deps
